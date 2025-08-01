@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta property="og:title" content="Zidio Certificate" />
+<meta property="og:description" content="Check out my certificate from Zidio!" />
+<meta property="og:image" content="https://zidio.in/assets/certificate-preview.png" />
+<meta property="og:url" content="https://zidio.in/certificate/CERT-12345" />
+
+  <title>Certificate Verification - Zidio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="" id="first">
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-container">
+      <!-- Logo and Branding -->
+      <div class="logo-branding">
+        <div class="logo-circle">
+          <span class="logo-text">Z</span>
+        </div>
+        <div class="brand-text">
+          <h1>Zidio Development</h1>
+          <p>Professional Training & Certification</p>
+        </div>
+      </div>
+
+      <!-- Badge + Hero Title -->
+      <div class="hero-text">
+        <span class="badge">🔒 Blockchain-Secured Verification</span>
+        <h2>
+          Verify Your <span class="gradient-text">Digital Certificate</span> Instantly
+        </h2>
+        <p>
+          Access and verify authentic Zidio Development certificates with our secure verification portal.
+          Share your achievements with confidence and showcase your skills to the world.
+        </p>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="stats-grid" id="statsGrid">
+        <!-- JavaScript will inject stats here -->
+      </div>
+    </div>
+  </section>
+<!-- Why Choose Zidio Verification Section -->
+
+<!-- Verify Your Certificate Section -->
+<section style="padding-top: 4rem; padding-bottom: 4rem;">
+  <div style="max-width: 1120px; margin: 0 auto; padding-left: 1rem; padding-right: 1rem;">
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <h3 style="font-size: 1.875rem; font-weight: bold; color: #1f2937; margin-bottom: 1rem;">
+        Verify Your Certificate
+      </h3>
+      <p style="font-size: 1.125rem; color: #4b5563; max-width: 42rem; margin: auto;">
+        Enter your certificate ID below to instantly verify and access your digital certificate
+      </p>
+    </div>
+
+    <!-- Verification Form -->
+    <div style="max-width: 500px; margin: auto;">
+      <form id="verifyForm" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input
+          type="text"
+          id="certificateId"
+          placeholder="Enter Certificate ID"
+          required
+          style="padding: 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem;"
+        />
+        <button
+          type="submit"
+          id="verifyBtn"
+          style="padding: 0.75rem 1rem; background-color: #2563eb; color: white; border: none; border-radius: 0.5rem; font-size: 1rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;"
+        >
+          <span id="buttonText">Verify</span>
+          <div id="buttonSpinner" style="display: none;">
+            <svg style="width: 1rem; height: 1rem; animation: spin 1s linear infinite;" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"/>
+            </svg>
+          </div>
+        </button>
+        <div id="result" style="text-align: center; font-weight: 500;"></div>
+
+        <!-- Sample IDs -->
+        <div style="margin-top: 1.5rem; font-size: 0.875rem; color: #6b7280; text-align: center;">
+          Try sample IDs: <span id="sampleIds" style="color: #2563eb; font-weight: 600;">ZIDIO2023XYZ, ZIDIO2024ABC</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+<script>
+  // Your functions should be here (outside the submit event listener)
+  let imageUrl = "";
+
+   function downloadPDF() {
+    const certId = document.getElementById("certificateId").value.trim();
+    const link = document.createElement("a");
+    link.href = `http://cert.zidio.in/download-pdf/${certId}`;
+    link.download = `Zidio_Certificate_${certId}.pdf`; // This name may be overridden by server headers
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function printCertificate() {
+    const certId = document.getElementById("certificateId").value.trim();
+  const pdfUrl = `http://cert.zidio.in/print-pdf/${certId}`;
+  const printWindow = window.open(pdfUrl, '_blank');
+
+  // Let the browser handle print once PDF is loaded
+  printWindow.onload = function () {
+    printWindow.focus();
+    printWindow.print();
+  };
+}
+
+ function shareOnLinkedIn() {
+  const certUrl = "https://zidio.in"; // This should be the public, shareable certificate URL
+  const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(certUrl)}`;
+  window.open(linkedInShareUrl, '_blank');
+}
+
+  function shareCertificate() {
+    const certUrl = imageUrl;
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'My Zidio Certificate',
+        text: 'Check out my certificate from Zidio!',
+        url: certUrl,
+      }).catch(console.error);
+    } else {
+      alert('Sharing not supported in this browser.');
+    }
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(imageUrl).then(() => {
+      alert("Certificate link copied to clipboard!");
+    }).catch(err => {
+      console.error("Failed to copy: ", err);
+    });
+  }
+
+  // Form submission logic
+  const form = document.getElementById("verifyForm");
+  const verifyBtn = document.getElementById("verifyBtn");
+  const buttonText = document.getElementById("buttonText");
+  const buttonSpinner = document.getElementById("buttonSpinner");
+  const result = document.getElementById("result");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const certId = document.getElementById("certificateId").value.trim();
+    if (!certId) return;
+
+    buttonText.textContent = "Verifying";
+    buttonSpinner.style.display = "block";
+    verifyBtn.disabled = true;
+    result.innerHTML = "";
+
+    try {
+      const response = await fetch(`http://cert.zidio.in/certificate/${certId}`);
+
+      if (response.ok) {
+        const blob = await response.blob();
+        imageUrl = URL.createObjectURL(blob);
+        document.getElementById("image-container").src = imageUrl;
+
+        result.style.color = "green";
+        result.innerHTML = `<i class="fas fa-check-circle"></i> Certificate verified successfully!`;
+
+        document.getElementById("first").classList.add("disappear");
+        document.getElementById("second").classList.remove("disappear");
+      } else if (response.status === 404) {
+        result.style.color = "red";
+        result.innerHTML = '<i class="fas fa-times-circle"></i> Certificate ID not found.';
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (error) {
+      console.error(error);
+      result.style.color = "red";
+      result.innerHTML = '<i class="fas fa-exclamation-circle"></i> Server error occurred.';
+    } finally {
+      buttonText.textContent = "Verify";
+      buttonSpinner.style.display = "none";
+      verifyBtn.disabled = false;
+    }
+  });
+</script>
+
+<section style="padding: 4rem 1rem; background-color: white;">
+  <div style="max-width: 1200px; margin: auto;">
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <h3 style="font-size: 2rem; font-weight: bold; color: #1f2937; margin-bottom: 1rem;">
+        Why Choose Zidio Verification?
+      </h3>
+      <p style="font-size: 1.125rem; color: #4b5563; max-width: 600px; margin: auto;">
+        Our advanced verification system ensures the highest level of security and authenticity
+      </p>
+    </div>
+
+    <div id="features-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+      <!-- Cards will be added by JS -->
+    </div>
+  </div>
+</section>
+
+<script>
+  const features = [
+    {
+      icon: "🔒",
+      title: "Secure Verification",
+      description: "Advanced encryption to ensure certificate authenticity.",
+    },
+    {
+      icon: "⚡",
+      title: "Instant Results",
+      description: "Verify certificates in seconds with real-time validation.",
+    },
+    {
+      icon: "📄",
+      title: "Digital Proof",
+      description: "Access tamper-proof digital certificates anytime.",
+    },
+    {
+      icon: "✅",
+      title: "Trusted by Many",
+      description: "Used and trusted by thousands of learners and employers.",
+    },
+  ];
+
+  const container = document.getElementById("features-container");
+
+  features.forEach((feature) => {
+    const card = document.createElement("div");
+    card.style.boxShadow = "0 4px 8px rgba(0,0,0,0.05)";
+    card.style.borderRadius = "1rem";
+    card.style.padding = "2rem";
+    card.style.textAlign = "center";
+    card.style.transition = "box-shadow 0.3s";
+    card.onmouseenter = () => (card.style.boxShadow = "0 8px 20px rgba(0,0,0,0.1)");
+    card.onmouseleave = () => (card.style.boxShadow = "0 4px 8px rgba(0,0,0,0.05)");
+
+    const icon = document.createElement("div");
+    icon.textContent = feature.icon;
+    icon.style.fontSize = "1.5rem";
+    icon.style.background = "linear-gradient(to right, #bfdbfe, #ddd6fe)";
+    icon.style.borderRadius = "0.75rem";
+    icon.style.width = "48px";
+    icon.style.height = "48px";
+    icon.style.display = "flex";
+    icon.style.alignItems = "center";
+    icon.style.justifyContent = "center";
+    icon.style.margin = "0 auto 1rem auto";
+
+    const title = document.createElement("h4");
+    title.textContent = feature.title;
+    title.style.fontWeight = "600";
+    title.style.color = "#111827";
+    title.style.marginBottom = "0.5rem";
+
+    const desc = document.createElement("p");
+    desc.textContent = feature.description;
+    desc.style.color = "#4b5563";
+    desc.style.fontSize = "0.875rem";
+
+    card.appendChild(icon);
+    card.appendChild(title);
+    card.appendChild(desc);
+    container.appendChild(card);
+  });
+</script>
+<!-- How It Works Section -->
+<!-- Feather Icons CDN -->
+<script src="https://unpkg.com/feather-icons"></script>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-gradient-to-r from-blue-50 to-purple-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h3 class="text-3xl font-bold text-gray-900 mb-4">How It Works</h3>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Simple, secure, and instant certificate verification in three easy steps
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      
+      <!-- Step 1 -->
+      <div>
+        <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white">
+          <i data-feather="search" class="w-8 h-8"></i>
+        </div>
+        <h4 class="text-xl font-semibold text-gray-900 mb-3">1. Enter Certificate ID</h4>
+        <p class="text-gray-600">
+          Input your unique certificate identifier provided when you completed your course.
+        </p>
+      </div>
+
+      <!-- Step 2 -->
+      <div>
+        <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white">
+          <i data-feather="shield" class="w-8 h-8"></i>
+        </div>
+        <h4 class="text-xl font-semibold text-gray-900 mb-3">2. Instant Verification</h4>
+        <p class="text-gray-600">
+          Our system verifies your certificate against our secure blockchain database.
+        </p>
+      </div>
+
+      <!-- Step 3 -->
+      <div>
+        <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white">
+          <i data-feather="share-2" class="w-8 h-8"></i>
+        </div>
+        <h4 class="text-xl font-semibold text-gray-900 mb-3">3. Access & Share</h4>
+        <p class="text-gray-600">
+          Download, print, or share your verified certificate with employers and networks.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="max-w-3xl mx-auto">
+      <h3 class="text-3xl font-bold text-gray-900 mb-6">Trusted by Industry Leaders</h3>
+      <p class="text-lg text-gray-600 mb-8">
+        Zidio Development certificates are recognized and valued by top companies in the technology industry
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 items-center opacity-60">
+        <div class="h-12 bg-gray-200 rounded flex items-center justify-center">
+          <span class="font-semibold text-gray-500">TechCorp</span>
+        </div>
+        <div class="h-12 bg-gray-200 rounded flex items-center justify-center">
+          <span class="font-semibold text-gray-500">InnovateLab</span>
+        </div>
+        <div class="h-12 bg-gray-200 rounded flex items-center justify-center">
+          <span class="font-semibold text-gray-500">DataSystems</span>
+        </div>
+        <div class="h-12 bg-gray-200 rounded flex items-center justify-center">
+          <span class="font-semibold text-gray-500">CloudTech</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+
+
+<div class="disappear" id="second">
+<!-- Certificate Actions Section -->
+ <div class="space-y-8 text-center py-12 px-4">
+  <!-- Icon and Heading -->
+  <div class="flex items-center justify-center gap-2 mb-4">
+    <!-- Replacing React CheckCircle icon with Lucide SVG icon -->
+    <svg id="check-icon" class="w-8 h-8 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+
+    <h2 class="text-3xl font-bold text-gray-900">Certificate Verified</h2>
+  </div>
+
+  <!-- Description -->
+
+
+  <p class="text-lg text-gray-600">
+    This certificate has been verified as authentic and was issued by Zidio Development.
+  </p>
+</div>
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <h3 class="text-2xl font-semibold text-center text-gray-800 mb-6">Certificate Preview</h3>
+  <div class="border border-gray-300 rounded-lg overflow-hidden shadow-md">
+    <!-- Replace src with your certificate image path -->
+    <img src="" alt="Certificate Preview" class="w-full h-auto" id="image-container"/>
+  </div>
+</div>
+<section id="certificate-actions" style="max-width: 80rem; margin: 3rem auto; border: 1px solid #e5e7eb; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 2rem;">
+  <!-- Header -->
+  <div style="text-align: center; margin-bottom: 1.5rem;">
+    <h3 style="font-size: 1.25rem; font-weight: bold; color: #1f2937; margin-bottom: 0.5rem;">Certificate Actions</h3>
+    <p style="color: #4b5563;">Download, share, or showcase your achievement</p>
+  </div>
+
+  <!-- Action Buttons -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+    <button onclick="downloadPDF()" style="background: linear-gradient(to right, #2563eb, #7c3aed); color: white; padding: 0.75rem; border: none; border-radius: 0.5rem; display: flex; align-items: center; gap: 0.5rem; justify-content: center; font-weight: 500;">
+      ⬇️ Download PDF
+    </button>
+
+    <button onclick="printCertificate()" style="padding: 0.75rem; border: 2px solid #d1d5db; border-radius: 0.5rem; background: white; display: flex; align-items: center; gap: 0.5rem; justify-content: center; font-weight: 500;">
+      🧾 Print Certificate
+    </button>
+
+    <button onclick="shareCertificate()" style="padding: 0.75rem; border: 2px solid #d1d5db; border-radius: 0.5rem; background: white; display: flex; align-items: center; gap: 0.5rem; justify-content: center; font-weight: 500;">
+      📤 Share
+    </button>
+
+    <button onclick="copyLink()" style="padding: 0.75rem; border: 2px solid #d1d5db; border-radius: 0.5rem; background: white; display: flex; align-items: center; gap: 0.5rem; justify-content: center; font-weight: 500;">
+      🔗 Copy Link
+    </button>
+  </div>
+
+  <!-- LinkedIn -->
+  <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb; text-align: center;">
+    <p style="font-size: 0.875rem; color: #6b7280;">Share your achievement on professional networks:</p>
+    <div style="margin-top: 0.5rem;">
+      <button onclick="shareOnLinkedIn()" style="padding: 0.5rem 1rem; border: 2px solid #d1d5db; border-radius: 0.375rem; background: white; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem;">
+        🌐 Share on LinkedIn
+      </button>
+    </div>
+  </div>
+
+  <!-- Note -->
+  <div style="margin-top: 1.5rem; text-align: center;">
+    <p style="font-size: 0.875rem; color: #9ca3af;">
+      This certificate is digitally verified and secured by Zidio Development's blockchain technology.
+    </p>
+  </div>
+</section>
+
+</div>
+<!-- Run Feather Icons -->
+<script>
+  feather.replace();
+</script>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
