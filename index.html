@@ -107,9 +107,10 @@
   let imageUrl = "";
 
    function downloadPDF() {
-    const certId = document.getElementById("certificateId").value.trim();
+    const certId = encodeURIComponent(document.getElementById("certificateId").value.trim());
+    
     const link = document.createElement("a");
-    link.href = `http://cert.zidio.in/download-pdf/${certId}`;
+    link.href = `https://cert.zidio.in/download-pdf/${certId}`;
     link.download = `Zidio_Certificate_${certId}.pdf`; // This name may be overridden by server headers
     document.body.appendChild(link);
     link.click();
@@ -117,8 +118,8 @@
   }
 
   function printCertificate() {
-    const certId = document.getElementById("certificateId").value.trim();
-  const pdfUrl = `http://cert.zidio.in/print-pdf/${certId}`;
+    const certId = encodeURIComponent(document.getElementById("certificateId").value.trim());
+  const pdfUrl = `https://cert.zidio.in/print-pdf/${certId}`;
   const printWindow = window.open(pdfUrl, '_blank');
 
   // Let the browser handle print once PDF is loaded
@@ -149,7 +150,8 @@
   }
 
   function copyLink() {
-    navigator.clipboard.writeText(imageUrl).then(() => {
+    const certId = (document.getElementById("certificateId").value.trim());
+    navigator.clipboard.writeText(`https://zidio.in/shared.html?id=${certId}`).then(() => {
       alert("Certificate link copied to clipboard!");
     }).catch(err => {
       console.error("Failed to copy: ", err);
@@ -166,7 +168,9 @@
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const certId = document.getElementById("certificateId").value.trim();
+   const certId = encodeURIComponent(document.getElementById("certificateId").value.trim());
+    
+
     if (!certId) return;
 
     buttonText.textContent = "Verifying";
@@ -175,7 +179,7 @@
     result.innerHTML = "";
 
     try {
-      const response = await fetch(`http://cert.zidio.in/certificate/${certId}`);
+      const response = await fetch(`https://cert.zidio.in/certificate/${certId}`);
 
       if (response.ok) {
         const blob = await response.blob();

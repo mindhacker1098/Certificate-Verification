@@ -181,7 +181,9 @@
     }
   </style>
 </head>
-<body>
+<body >
+
+  <div style="display: none;" id="main-box">
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
         <div className="max-w-6xl mx-auto px-4 py-12 space-y-12">
   <div class="text-center space-y-6">
@@ -200,7 +202,7 @@
         <i class="fas fa-check-circle text-green-600" style="font-size: 2rem;"></i>
         <span class="badge bg-green-100 text-green-800">✓ Verified Certificate</span>
       </div>
-      <h2 class="text-3xl font-bold text-gray-900">Shakti Prasad Nahak's Certificate</h2>
+      <h2 class="text-3xl font-bold text-gray-900" id="Name"></h2>
       <p class="text-xl text-gray-600 max-w-3xl mx-auto">
         This certificate has been verified as authentic and was issued by Zidio Development.
         View the complete certificate details below.
@@ -210,19 +212,19 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
       <div class="bg-white rounded-lg p-4 shadow-sm">
         <p class="text-sm text-gray-600">Program</p>
-        <p class="font-semibold text-gray-900 text-sm">Web Development</p>
+        <p class="font-semibold text-gray-900 text-sm" id="Program"></p>
       </div>
       <div class="bg-white rounded-lg p-4 shadow-sm">
         <p class="text-sm text-gray-600">Duration</p>
-        <p class="font-semibold text-gray-900 text-sm">3 Months</p>
+        <p class="font-semibold text-gray-900 text-sm" id="Duration"></p>
       </div>
       <div class="bg-white rounded-lg p-4 shadow-sm">
         <p class="text-sm text-gray-600">Completed</p>
-        <p class="font-semibold text-gray-900 text-sm">2025-06-30</p>
+        <p class="font-semibold text-gray-900 text-sm" id="Completed"></p>
       </div>
       <div class="bg-white rounded-lg p-4 shadow-sm">
         <p class="text-sm text-gray-600">Certificate ID</p>
-        <p class="font-semibold text-gray-900 text-sm font-mono">CERT-12347</p>
+        <p class="font-semibold text-gray-900 text-sm font-mono" id="Certificate"></p>
       </div>
     </div>
   </div>
@@ -245,7 +247,7 @@
     margin: auto;
     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
   ">
-    <img src="certificate.png" alt="Certificate Preview" style="width: 100%; height: auto; border-radius: 8px;" />
+    <img src="certificate.png" alt="Certificate Preview" style="width: 100%; height: auto; border-radius: 8px;" id="image-container"/>
   </div>
 </div>
 
@@ -330,5 +332,109 @@
   
   </div>
   </div>
+
+  </div>
+
+
+
+  
+
+
+<!-- Not Found Section -->
+<div id="certificate-not-found" style="display: none;" class="text-center py-20">
+  <h1 class="text-4xl font-bold text-red-600 mb-4">Certificate Not Found</h1>
+  <p class="text-gray-600 text-lg">
+    The certificate ID is invalid or does not exist.
+  </p>
+  <a href="https://zidio.in" class="inline-block mt-6 px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
+    Return to Home
+  </a>
+</div>
+
 </body>
+
+
+
+<script>
+  async function getCertificateId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let certId = urlParams.get('id');
+    certId = encodeURIComponent(certId)
+    
+    if (!certId) {
+      console.error('No certificate ID provided');
+      return;
+    }
+
+    try {
+      // Fetch metadata
+      const metaResponse = await fetch(`https://cert.zidio.in/certificate-meta/${certId}`);
+      
+      if (!metaResponse.ok) {
+        document.getElementById("certificate-not-found").style.display="block"
+        throw new Error('Certificate metadata not found');
+      }
+
+      const data = await metaResponse.json();
+
+      // Update DOM elements
+      document.getElementById("Program").textContent = data.program || 'N/A';
+      document.getElementById("Duration").textContent = data.duration || 'N/A';
+      document.getElementById("Completed").textContent = data.completionDate || 'N/A';
+      document.getElementById("Certificate").textContent = data.certId || 'N/A';
+      document.getElementById("Name").textContent = `${data.name || 'User'}'s Certificate`;
+
+      // Fetch certificate image
+      const imageResponse = await fetch(`https://cert.zidio.in/certificate/${certId}`);
+      
+      if (imageResponse.ok) {
+        const blob = await imageResponse.blob();
+        const imageUrl = URL.createObjectURL(blob);
+        document.getElementById("image-container").src = imageUrl;
+
+        document.getElementById("main-box").style.display="block";
+      } else {
+        console.error('Certificate image not found');
+
+        document.getElementById("certificate-not-found").style.display="block"
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+      // You might want to show an error message to the user
+      
+    }
+  }
+
+  // Call the function when the page loads
+  document.addEventListener('DOMContentLoaded', getCertificateId);
+</script>
+<script>
+  // Disable right-click
+  document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+  // Disable certain keyboard shortcuts
+  document.addEventListener('keydown', function (e) {
+    // F12
+    if (e.key === "F12") {
+      e.preventDefault();
+    }
+
+    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+    if (
+      (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || 
+      (e.ctrlKey && (e.key === 'U' || e.key === 'S'))
+    ) {
+      e.preventDefault();
+    }
+
+    // Ctrl+Shift+C (inspect)
+    if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+      e.preventDefault();
+    }
+  });
+
+  // Detect DevTools open (optional & experimental)
+ 
+</script>
+
 </html>
